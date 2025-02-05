@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/view/St4.dart';
 
-import 'package:flutter_application_1/view/St1.dart';
-import 'package:flutter_application_1/view/St2.dart';
+import 'package:flutter_application_1/view/st1.dart';
+import 'package:flutter_application_1/view/st2.dart';
+import 'package:flutter_application_1/view/st3.dart';
 
 void main() {
   runApp(const MyApp());
