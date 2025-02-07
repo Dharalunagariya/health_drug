@@ -1,17 +1,45 @@
-import 'dart:math';
-
+import 'dart:async';
 import 'package:custom_linear_progress_indicator/custom_linear_progress_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/view/st3.dart';
 
-class st2screen extends StatefulWidget {
-  const st2screen({super.key});
+class St2Screen extends StatefulWidget {
+  const St2Screen({super.key});
 
   @override
-  State<st2screen> createState() => _st2screenState();
+  State<St2Screen> createState() => _St2ScreenState();
 }
 
-class _st2screenState extends State<st2screen> {
-  get progressPercent => null;
+class _St2ScreenState extends State<St2Screen> {
+  double _progress = 0.0;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startProgress();
+  }
+
+  void _startProgress() {
+    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      if (_progress < 1.0) {
+        setState(() {
+          _progress += 0.01;
+        });
+      } else {
+        _timer.cancel();
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return st3screen();
+        }));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,40 +48,28 @@ class _st2screenState extends State<st2screen> {
         height: 932,
         width: double.infinity,
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('image/ST-2 (1).png'), fit: BoxFit.fill)),
+          image: DecorationImage(
+            image: AssetImage('image/ST-2 (1).png'),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomLinearProgressIndicator(
-              maxValue: 1, // new
-              value: progressPercent,
-              minHeight: 50,
-              borderWidth: 4,
-              borderColor: Colors.yellow.shade900,
-              borderStyle: BorderStyle.solid,
-              colorLinearProgress: Colors.yellow,
-              animationDuration: 1000,
-              borderRadius: 5,
-              linearProgressBarBorderRadius: 10,
-              backgroundColor: Colors.green.shade50,
-              progressAnimationCurve: Curves.bounceInOut, // new
-              alignment: Alignment.center, // new
-              showPercent: true, // new
-              percentTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-              gradientColors: const [
-                Colors.purple,
-                Colors.blue,
-                Colors.blueAccent
-              ], // new
-            ),
-            Text(
-              'Loading...',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Color(0xffFFFFFF),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 87),
+              child: CustomLinearProgressIndicator(
+                maxValue: 1.0,
+                value: _progress,
+                minHeight: 9,
+                animationDuration: 500,
+                linearProgressBarBorderRadius: 150,
+                backgroundColor: Color(0xff7E7F7F),
+                progressAnimationCurve: Curves.easeInOut,
+                colorLinearProgress: Color(0xffFFFFFF),
+                onProgressChanged: (double value) {
+                  print(value);
+                },
               ),
             ),
           ],

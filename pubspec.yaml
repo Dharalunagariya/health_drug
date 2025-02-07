@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   percent_indicator: ^4.2.4
   custom_linear_progress_indicator: ^0.0.4
+  flutter_animated_progress_bar: ^1.0.5
+  progress_bar_countdown: ^0.0.3
 
 dev_dependencies:
   flutter_test:

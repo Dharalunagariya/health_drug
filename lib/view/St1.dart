@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/view/st2.dart';
 
 class st1screen extends StatefulWidget {
   const st1screen({super.key});
@@ -8,6 +9,18 @@ class st1screen extends StatefulWidget {
 }
 
 class _st1screenState extends State<st1screen> {
+  @override
+  void initState() {
+    super.initState();
+    // Delay for a few seconds before navigating
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => St2Screen()),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
