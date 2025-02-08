@@ -1,69 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:progress_bar_countdown/progress_bar_countdown.dart';
+import 'package:flutter_application_1/view/st5.dart';
 
-class st4screen extends StatefulWidget {
-  const st4screen({super.key});
+class St4Screen extends StatefulWidget {
+  const St4Screen({super.key});
 
   @override
-  State<st4screen> createState() => _st4screenState();
+  State<St4Screen> createState() => _St4ScreenState();
 }
 
-class _st4screenState extends State<st4screen> {
-  ProgressBarCountdownController _controller = ProgressBarCountdownController();
+class _St4ScreenState extends State<St4Screen> {
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => st5screen()),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: 932,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('image/ST-4.png'), fit: BoxFit.fill),
+      body: Container(
+        height: screenHeight,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('image/ST-4.png'),
+            fit: BoxFit.fill,
           ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ProgressBarCountdown(
-                  initialDuration: Duration(seconds: 60),
-                  progressColor:
-                      Colors.transparent, // Set transparent for progress color
-                  progressBackgroundColor: Colors
-                      .transparent, // Set transparent for background color
-                  initialTextColor: Colors.black,
-                  revealedTextColor: Colors.white,
-                  height: 40,
-                  textStyle:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  countdownDirection: ProgressBarCountdownAlignment.left,
-                  controller: _controller,
-                  autoStart: true, // Timer will start automatically
-                  onComplete: () {
-                    print('Countdown Completed');
-                  },
-                  onStart: () {
-                    print('Countdown Started');
-                  },
-                  onChange: (String timeStamp) {
-                    print('Countdown Changed $timeStamp');
-                  },
-                  timeFormatter: (Duration remainingTime) {
-                    final seconds = remainingTime.inSeconds
-                        .remainder(60)
-                        .toString()
-                        .padLeft(2, '0');
-                    final milliseconds =
-                        (remainingTime.inMilliseconds % 1000 ~/ 10)
-                            .toString()
-                            .padLeft(2, '0');
-                    return '$seconds:$milliseconds';
-                  },
-                ),
-              ],
-            ),
-          ),
+        ),
+        child: Center(
+          child: TweenAnimationBuilder<Duration>(
+              duration: Duration(minutes: 3),
+              tween: Tween(begin: Duration(minutes: 3), end: Duration.zero),
+              onEnd: () {
+                print('Timer ended');
+              },
+              builder: (BuildContext context, Duration value, Widget? child) {
+                final minutes = value.inMinutes;
+                final seconds = value.inSeconds % 60;
+                final totalDuration = Duration(minutes: 3);
+                final remainingDuration = totalDuration - value;
+
+                // Calculate the percentage of the timer remaining
+                double percentage = (remainingDuration.inMilliseconds /
+                        totalDuration.inMilliseconds) *
+                    100;
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${percentage.toStringAsFixed(1)}%', // Display percentage with one decimal place
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 64),
+                      ),
+                    ],
+                  ),
+                );
+              }),
         ),
       ),
     );

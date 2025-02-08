@@ -13,8 +13,8 @@ class _st1screenState extends State<st1screen> {
   void initState() {
     super.initState();
     // Delay for a few seconds before navigating
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => St2Screen()),
       );

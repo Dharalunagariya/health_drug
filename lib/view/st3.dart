@@ -13,10 +13,10 @@ class _st3screenState extends State<st3screen> {
   void initState() {
     super.initState();
     // Delay for a few seconds before navigating
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => st4screen()),
+        MaterialPageRoute(builder: (context) => St4Screen()),
       );
     });
   }
