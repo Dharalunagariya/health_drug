@@ -15,7 +15,7 @@ class _st5screenState extends State<st5screen> {
     Future.delayed(Duration(seconds: 3), () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => st6screen()),
+        MaterialPageRoute(builder: (context) => signinscreen()),
       );
     });
   }
