@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view/st7.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class signinscreen extends StatefulWidget {
   const signinscreen({super.key});
@@ -9,7 +12,54 @@ class signinscreen extends StatefulWidget {
 }
 
 class _st6screenState extends State<signinscreen> {
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
   bool currentvalue = true;
+  var isobscured;
+  
+  
+
+  String? loginname = "";
+  String? loginemail = "";
+  String? loginpassword = "";
+  String? errormassge;
+  @override
+  void initState() {
+    getvalue();
+    isobscured=true;
+    super.initState();
+  }
+
+  final _formKey = GlobalKey<FormState>();
+  void getvalue() async {
+    final SharedPreferences pres = await SharedPreferences.getInstance();
+
+    loginname = await pres.getString('getname');
+    loginemail = await pres.getString('getemail');
+    loginpassword = await pres.getString('getpassword');
+
+    log(loginemail.toString());
+    log(loginname.toString());
+    log(loginpassword.toString());
+  }
+
+  void validatorlogin(String email, String password) {
+    log("fols");
+    log("email:$loginemail");
+    if (loginemail == email && loginpassword == password) {
+      log("True");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => signupscreen()));
+    } else {
+      log("fols1");
+      setState(() {
+        errormassge = 'email anbd password not match';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errormassge.toString())),
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +105,10 @@ class _st6screenState extends State<signinscreen> {
                 height: 8,
               ),
               TextField(
+                controller: emailcontroller,
                 obscureText: true,
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.email_outlined),
                   fillColor: Color(0xffF1F5F9),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -79,8 +131,20 @@ class _st6screenState extends State<signinscreen> {
                 height: 8,
               ),
               TextField(
+                controller: passwordcontroller,
                 obscureText: true,
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: isobscured
+                        ? Icon(Icons.visibility)
+                        : Icon(Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        isobscured = !isobscured;
+                      });
+                    },
+                  ),
+                  prefixIcon: Icon(Icons.lock_outline),
                   fillColor: Color(0xffF1F5F9),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -115,7 +179,12 @@ class _st6screenState extends State<signinscreen> {
                 height: 47,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => signupscreen()),
+                  );
+                },
                 child: Container(
                   height: 58,
                   width: double.infinity,
